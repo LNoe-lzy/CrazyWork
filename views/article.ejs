@@ -1,0 +1,61 @@
+<%- include header %>
+<p>
+	<% if (user && (user.name == post.name)) { %>
+    <span><a class="edit" href="/edit/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">编辑</a></span>
+    <span><a class="edit" href="/remove/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">删除</a></span>
+    <% } %>
+    <% var flag = 1 %>
+    <% if (user && (user.name != post.name)) { %>
+    <% if ((post.reprint_info.reprint_from != undefined) && (user.name == post.reprint_info.reprint_from.name)) { %>
+    <% flag = 0 %>
+    <% } %>
+    <% if ((post.reprint_info.reprint_to != undefined)) { %>
+    <% post.reprint_info.reprint_to.forEach(function (reprint_to, index) { %>
+    <% if (user.name == reprint_to.name) { %>
+    <% flag = 0 %>
+    <% } %>
+    <% }) %>
+    <% } %>
+    <% } else { %>
+    <% flag = 0 %>
+    <% } %>
+    <% if (flag) { %>
+    <span><a class="edit" href="/reprint/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">转载</a></span>
+    <% } %>
+    <% if (user && (user.name != post.name)) { %>
+    <% if ((post.reception_info.reception_from != undefined) && (user.name == post.reception_info.reception_from.name)) { %>
+    <% flag = 0 %>
+    <% } %>
+    <% if ((post.reception_info.reception_to != undefined)) { %>
+    <% post.reception_info.reception_to.forEach(function (reception_to, index) { %>
+    <% if (user.name == reception_to.name) { %>
+    <% flag = 0 %>
+    <% } %>
+    <% }) %>
+    <% } %>
+    <% } else { %>
+    <% flag = 0 %>
+    <% } %>
+    <% if (flag) { %>
+    <span><a class="edit" href="/reception/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">接受任务</a></span>
+    <% } %>
+</p>
+<div class="info">
+	<a href="/u/<%= post.name %>" class="author"><%= post.name %></a> 
+	<span class="time"><%= post.time.minute %></span>
+	<div class="tags">
+	<% post.tags.forEach(function(tag,index){ %>
+    <% if(tag) { %>
+    <a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
+    <% } %>
+    <% }) %>
+    </div>
+    <% if (post.reprint_info.reprint_from) { %>
+      <br><a href="/u/<%= post.reprint_info.reprint_from.name %>/<%= post.reprint_info.reprint_from.day %>/<%= post.reprint_info.reprint_from.title %>">原文链接</a>
+    <% } %>
+    <% if (post.reception_info.reception_from) { %>
+      <br><a href="/u/<%= post.reception_info.reception_from.name %>/<%= post.reception_info.reception_from.day %>/<%= post.reception_info.reception_from.title %>">原文链接</a>
+    <% } %>
+</div>
+<p><%- post.post %></p>
+<%- include footer %>

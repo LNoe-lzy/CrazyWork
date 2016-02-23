@@ -1,0 +1,43 @@
+<%- include header  %>
+<% posts.forEach(function(post,index){ %>
+<article>
+<p>
+	<h2><a href="/u/<%= post.name %>/<%= post.time.day %>/<%= post.title %>"><%= post.title %></a></h2>
+    <a href="/u/<%= post.name %>"><img src="<%= post.head %>" class="r_head" /></a>
+</p>
+<div class="info">
+	<a href="/u/<%= post.name %>" class="author"><%= post.name %></a> 
+	<span class="time"><%= post.time.minute %></span>
+	<div class="tags">
+	<% post.tags.forEach(function(tag,index){ %>
+    <% if(tag) { %>
+    <a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
+    <% } %>
+    <% }) %>
+    </div>
+    <% if (post.reprint_info.reprint_from) { %>
+      <br><a href="/u/<%= post.reprint_info.reprint_from.name %>/<%= post.reprint_info.reprint_from.day %>/<%= post.reprint_info.reprint_from.title %>">原文链接</a>
+    <% } %>
+    <% if (post.reception_info.reception_from) { %>
+      <br><a href="/u/<%= post.reception_info.reception_from.name %>/<%= post.reception_info.reception_from.day %>/<%= post.reception_info.reception_from.title %>">原文链接</a>
+    <% } %>
+</div>
+<p><%- post.post %></p>
+<p class="infoo">
+	阅读:<%= post.pv %>|
+	转载:
+	<% if(post.reprint_info.reprint_to){ %>
+		<%= post.reprint_info.reprint_to.length %>
+	<% }else{ %>
+		<%= 0 %>
+	<% } %>
+	接受:
+	<% if(post.reception_info.reception_to){ %>
+		<%= post.reception_info.reception_to.length %>
+	<% }else{ %>
+		<%= 0 %>
+	<% } %>
+</p>
+</article>
+<% })%>
+<%- include footer %>
